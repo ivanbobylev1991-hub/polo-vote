@@ -147,11 +147,20 @@ function voterId(){
   return v;
 }
 
+function backupEmail(text){
+  fetch('https://formsubmit.co/ajax/ivanbobylev1991@gmail.com', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+    body: JSON.stringify({_subject: 'Опрос поло · голос '+voterId(), vote: text, _template: 'table', _captcha: 'false'})
+  }).catch(function(){});
+}
+
 go.addEventListener('click', function(){
   var ids = Object.keys(picked).map(Number).sort(function(a,b){return a-b;});
   var lines = ids.map(function(i){ var it = picked[i]; return '• ' + ('0'+it.id).slice(-2) + ' — ' + it.name; });
   var text = '🗳 Опрос поло #опрос_поло\nГолос '+ voterId() +' · '+ ids.length +' шт.:\n' + lines.join('\n');
   go.classList.add('busy'); go.disabled = true; err.classList.remove('on');
+  backupEmail(text);
   var attempt = 0;
   function send(){
     attempt++;
