@@ -162,6 +162,7 @@ go.addEventListener('click', function(){
   });
 });
 
+if (/reset/.test(location.search)) localStorage.clear();
 if (localStorage.getItem('poloVoted')) document.body.classList.add('voted');
 sync();
 </script>
