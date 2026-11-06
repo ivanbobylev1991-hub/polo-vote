@@ -30,15 +30,12 @@ header p{font-size:14px;color:var(--gray);max-width:480px;margin:0 auto;line-hei
 .card .num{position:absolute;top:8px;left:8px;font-size:10px;font-weight:600;color:#fff;
   background:rgba(29,29,31,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   padding:3px 7px;border-radius:999px;letter-spacing:.04em}
-.card .cap{font-size:11px;color:var(--gray);text-align:center;padding:6px 2px 0;line-height:1.25;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card .check{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;
   background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.18);display:grid;place-items:center;
   opacity:0;transform:scale(.5);transition:opacity .16s ease,transform .16s ease}
 .card .check svg{width:12px;height:12px;stroke:#1d1d1f;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .card.sel{box-shadow:0 0 0 2.5px var(--ink),0 10px 26px rgba(0,0,0,.16)}
 .card.sel .check{opacity:1;transform:scale(1)}
-.card.sel .cap{color:var(--ink);font-weight:600}
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:50;
   background:rgba(251,251,253,.82);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);
   border-top:1px solid rgba(0,0,0,.08)}
@@ -119,8 +116,7 @@ ITEMS.forEach(function(it){
   c.innerHTML =
     '<img src="img/'+it.file+'" alt="'+it.name+'" loading="lazy" width="896" height="1200">' +
     '<span class="num">№ '+('0'+it.id).slice(-2)+'</span>' +
-    '<span class="check"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>' +
-    '<figcaption class="cap">'+it.name+'</figcaption>';
+    '<span class="check"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>';
   function toggle(){
     if (picked[it.id]) { delete picked[it.id]; c.classList.remove('sel'); c.setAttribute('aria-checked','false'); }
     else { picked[it.id] = it; c.classList.add('sel'); c.setAttribute('aria-checked','true'); }
