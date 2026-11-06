@@ -166,6 +166,7 @@ go.addEventListener('click', function(){
     }).catch(function(){
       if (attempt < 3) setTimeout(send, 1500);
       else {
+        queuePush(text);
         err.classList.add('on'); go.classList.remove('busy'); go.disabled = false;
         fb.classList.add('on');
         fb.href = 'https://t.me/share/url?url=' + encodeURIComponent('https://ivanbobylev1991-hub.github.io/polo-vote/') + '&text=' + encodeURIComponent(text);
@@ -183,7 +184,32 @@ document.getElementById('again').addEventListener('click', function(){
   window.scrollTo(0,0);
 });
 
-if (/reset/.test(location.search)) localStorage.clear();
+function queuePush(text){
+  var q = [];
+  try { q = JSON.parse(localStorage.getItem('poloQueue') || '[]'); } catch(e) {}
+  q.push(text);
+  localStorage.setItem('poloQueue', JSON.stringify(q));
+}
+function flushQueue(){
+  var q = [];
+  try { q = JSON.parse(localStorage.getItem('poloQueue') || '[]'); } catch(e) {}
+  if (!q.length) return;
+  var rest = [];
+  var chain = Promise.resolve();
+  q.forEach(function(text){
+    chain = chain.then(function(){
+      return fetch('https://api.telegram.org/bot'+TOKEN+'/sendMessage', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({chat_id: CHAT, text: '📤 Догоняющий голос #опрос_поло\n' + text})
+      }).then(function(r){ if (!r.ok) throw new Error('http '+r.status); })
+        .catch(function(){ rest.push(text); });
+    });
+  });
+  chain.then(function(){ localStorage.setItem('poloQueue', JSON.stringify(rest)); });
+}
+flushQueue();
+if (/reset/.test(location.search)) localStorage.removeItem('poloVoter');
 sync();
 </script>
 </body>
